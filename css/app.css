@@ -1,0 +1,86 @@
+/* first layer setting.*/
+html{
+    font-size: 16px;
+}
+html,*::after,*::before,*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    color:#eee;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+header{
+    padding-top: 2%;
+    height:100vh;
+    width:100%;
+    position:fixed;
+    overflow: scroll;
+}
+header > h1{
+    width:50%;
+    margin:0 auto;
+    color:#aaa;
+    text-align: center;
+    background: linear-gradient(90deg,rgba(27,27,27,0) 0%,rgba(27,27,27,0.6) 50%,rgba(27,27,27,0) 100% )
+}
+/* timetable layer*/
+section{
+    height:auto;
+    width:70%;
+    position:absolute;
+    top:10%;
+    left:15%;
+    text-align: center;
+    display:grid;
+    grid-template-columns: 1.5fr repeat(5, 2fr);
+    opacity:0.3;
+    transition:2s;
+}
+section:hover{
+    opacity:1;
+}
+.column{
+    font-size: 1rem;
+    display:inline-block;
+}
+.title{
+    height:2rem;
+}
+.time-slot{
+    height: 2.5rem;
+}
+.course{
+    display:grid;
+    height:52.5rem;
+    grid-template-rows: repeat(21,1fr);
+}
+.course>*{
+    margin:1/16px;
+}
+.course > div,#time > *,h3{
+    display:grid;
+    align-items: center;
+    background: rgba(27,27,27,0.7);
+    border-radius: 3px;
+}
+
+@media (max-width: 700px) {
+    html {
+        font-size: 5.5px;
+    }
+    header{
+        padding-top: 5%;
+        position:fixed;
+        overflow: scroll;
+    }
+    section{
+        width:100vw;
+        left:0;
+        opacity:0.9;
+    }
+    .course{
+        padding:0,1px;
+    }
+}
