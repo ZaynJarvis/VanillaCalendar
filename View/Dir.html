@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/app.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <style>
+    *{
+        margin:0;
+        padding:0;
+        background: #410872;
+    }
+    body{
+        width:100vw;
+        height:100vh;
+        text-align:center;
+    }
+    form{
+        width:100vw;
+        color:#ddd;
+        margin-top:20vh;
+    }
+    label{
+        font-size: 50px;
+    }
+    input{
+        width:50vw;
+        height:10vh;
+        border-radius: 10px;
+        font-size:50px;
+        padding-left: 30px;
+        margin-top:30px;
+    }
+    textarea{
+        width:50vw;
+        height:40vh;
+        margin-top: 20px;
+        border-radius:20px;
+        border: 2px #eee solid;
+        font-size:40px;
+        padding:30px;
+        overflow: scroll;
+        transition: 1s;
+        opacity:1;
+    }
+    button{
+        width:250px;
+        height:90px;
+        font-size: 30px;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+    button:hover{
+        background: #eee;
+        color: #410872;
+    }
+    .visible{
+        height:0.1px;
+        font-size:0px;
+        opacity:0;
+    }
+    *:focus, *:active{
+        outline:0;
+    }
+    </style>
+    
+</head>
+<body>
+    <form action="" method = "GET">
+        <label for="" id="title">Who Are You?</label><br>
+        <input type="text" name="name" id = "name" value = "" placeholder="Your Name"><br>
+        <textarea name="schedule" id="schedule" cols="30" rows="10" placeholder = "Paste your schedule from intu here." class = "visible"></textarea><br>
+    </form>
+    <button>New User</button>
+    <script>
+        $(document).ready(function(){
+            $('button').click((e)=>{
+                $('textarea').toggleClass("visible");
+                $('button').html() == 'Not New User'? $('button').html('New User') : $('button').html('Not New User');
+                setTimeout(function(){
+                    e.preventDefault();
+                }, 300)
+            })
+            $('input').keyup(function (e) {
+                if(e.target.value){
+                    let innerValue = e.target.value;
+                    $('#title').html('Hello! ' + innerValue);
+                }
+            });
+            $('form').submit(function (e) {
+                e.preventDefault();
+                let value = $('input').val();
+                $.get('/api/' + value).then((data) => {
+                    if(data === ''){
+                        $('input').val('');
+                        $('input').attr("placeholder", "Sorry, No Match :(");
+                    }
+                    else{
+                        let info = JSON.parse(data);
+                        window.open(info.url, '_self').focus();
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
