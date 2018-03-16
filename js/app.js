@@ -193,14 +193,14 @@ const BODY = DATA
                                 for (var i = Number(week[0]); i <= Number(week[1]); i++) {
                                     weekArr.push(i);
                                 }
-                                weekArr = weekArr.map(i => {if(i>7) return i+1
+                                weekArr = weekArr.map(i => {if(i>7) return parseInt(i)+1
                                                              else return i});
                                 console.log(weekArr)
                                 return weekArr
                             } else if (week.includes(",")) return week.split(",")
                                                                         .map(i => parseInt(i.trim()))
-                                                                        .map(i => {if(i>7) return i+1});
-                            else return week <=7 ? [week] : [week+1]
+                                                                        .map(i => { if (i > 7) return parseInt(i)+1});
+                            else return week <= 7 ? [week] : [parseInt(week)+1]
                         })(),
             courseTime : {
                 [item[2]]:item[3].split('-')
