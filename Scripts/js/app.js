@@ -54,109 +54,6 @@ function background(url){
 
 background(backgroundURL);
 
-
-
-//--------------------init------------------------
-//--------------first solution---------------------
-// var arr = X.split('\n');
-// var newArr = [];
-// var index = -1;
-// arr.forEach((a) => {
-//     if (a.split('\t').length == 15) {
-//         newArr.push([a.split('\t')]);
-//         index++;
-//     }
-//     else{
-//         newArr[index].push(a.split('\t'));
-//     }
-// })
-// const C = newArr;
-//
-// class setup {
-//     constructor(type, location, group, week, courseTime) {
-//         let arr = []
-//         let weekArr = []
-//         if (week.includes("-")) {
-//             week = week.split("-")
-//             for (var i = Number(week[0]); i <= Number(week[1]); i++) {
-//                 weekArr.push(i);
-//             }
-//             week = weekArr
-//         } else if (week.includes(",")) week = week.split(",").map((i)=>{return parseInt(i,10)});
-//         else week = [week]
-//         this.specific = {
-//             location: location,
-//             group: group,
-//             week: week,
-//             courseTime: courseTime
-//         }
-//         arr.push(this.specific)
-//         this.content = {
-//             [type]: arr
-//         }
-//     }
-//     extract() {
-//         return this.content
-//     }
-// }
-//
-// function jsonF(content) {
-//     function assign(C) {
-//         var result = []
-//         head = C[0].splice(0,9);
-//         C.forEach((list) => {
-//             let week = list[list.length - 1];
-//             week = week.split('k');
-//             let type = list[0];
-//             if(list[0]=='LEC/STUDIO') type = 'LEC';
-//             item = new setup(type, list[4], list[1], week[1], {
-//                 [list[2]]: list[3].split('-')
-//             })
-//             result.push(item.extract());
-//         });
-//         console.log(head);
-//         console.log('!');
-//         return [head, result];
-//     }
-//
-//     Rc = assign(content);
-//     RcC = Rc[1]
-//     var RcN = {}
-//     var keyArr = []
-//     RcC.forEach((item) => {
-//         if (keyArr.includes(Object.keys(item)[0])) {
-//             RcN[Object.keys(item)].push(item[Object.keys(item)][0])
-//         } else {
-//             RcN[Object.keys(item)] = item[Object.keys(item)];
-//             keyArr.push(Object.keys(item)[0]);
-//         }
-//     })
-//
-//     RcH = Rc[0];
-//     var result = {
-//         [RcH[0]]: {
-//             id: RcH[0],
-//             course: {
-//                 type: keyArr,
-//                 match: RcN
-//             }
-//         }
-//     }
-//     courseContent = Object.assign({}, courseContent, result);
-// }
-//
-// C.forEach((a) => jsonF(a))
-//
-// json = {
-//     courseList: Object.keys(courseContent),
-//     length: Object.keys(courseContent).length,
-//     courseContent: courseContent
-// }
-// var jsonFile = JSON.stringify(json);
-// var fs = require('fs');
-// fs.writeFile('myjsonfile.json',jsonFile, 'utf8');
-//----------------------------------------------------------------
-//-------------------------second solution------------------------
 const DATA = X.trim().split("\n")
     .filter(item => {
         return item[item.length - 1] !=='e'})
@@ -186,22 +83,24 @@ const BODY = DATA
         course.course.match[type].push({
             location:item[4],
             group:item[1],
-            week : ((week = item[item.length-1].split('k')[1])=>{
-                            if (week.includes("-")) {
-                                var weekArr = []
-                                week = week.split("-")
-                                for (var i = Number(week[0]); i <= Number(week[1]); i++) {
-                                    weekArr.push(i);
-                                }
-                                weekArr = weekArr.map(i => {if(i>7) return i+1
-                                                             else return i});
-                                console.log(weekArr)
-                                return weekArr
-                            } else if (week.includes(",")) return week.split(",")
-                                                                        .map(i => parseInt(i.trim()))
-                                                                        .map(i => {if(i>7) return i+1});
-                            else return week <=7 ? [week] : [week+1]
-                        })(),
+            week: ((week = item[item.length - 1].split('k')[1]) => {
+                if (week.includes("-")) {
+                    var weekArr = []
+                    week = week.split("-")
+                    for (var i = Number(week[0]); i <= Number(week[1]); i++) {
+                        weekArr.push(i);
+                    }
+                    weekArr = weekArr.map(i => {
+                        if (i > 7) return parseInt(i) + 1
+                        else return i
+                    });
+                    console.log(weekArr)
+                    return weekArr
+                } else if (week.includes(",")) return week.split(",")
+                    .map(i => parseInt(i.trim()))
+                    .map(i => { if (i > 7) return parseInt(i) + 1 });
+                else return week <= 7 ? [week] : [parseInt(week) + 1]
+            })(),
             courseTime : {
                 [item[2]]:item[3].split('-')
             }
